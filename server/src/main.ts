@@ -1,9 +1,9 @@
 import cors from "cors"
 import express, { Express } from "express"
-import { createRouter } from "./infrstructure/createRouter"
-import { getRouter } from "./infrstructure/getRouter"
-import { updateRouter } from "./infrstructure/updateRouter"
-import { deleteRouter } from "./infrstructure/deleteRouter"
+import { createRouter } from "./infrestructure/createRouter"
+import { getRouter } from "./infrestructure/getRouter"
+import { updateRouter } from "./infrestructure/updateRouter"
+import { deleteRouter } from "./infrestructure/deleteRouter"
 
 const app: Express = express()
 const PORT: number = 8080
