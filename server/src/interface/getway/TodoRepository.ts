@@ -4,6 +4,7 @@ import { Todo } from "../../domains/todo"
 
 export class TodoRepository implements todoRepository {
     private todoData: Todo[]
+
     constructor() {
         db.serialize(() => {
             db.all("SELECT * FROM todo", (err, rows: Todo[]) => {
@@ -25,6 +26,7 @@ export class TodoRepository implements todoRepository {
                 },
             )
         })
+
         return "SUCCESSFUL INSERTION"
     }
 
@@ -54,6 +56,7 @@ export class TodoRepository implements todoRepository {
                 return "SQL ERROR"
             })
         })
+
         return "DELETION SUCCESS"
     }
 }

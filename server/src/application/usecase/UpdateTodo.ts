@@ -8,13 +8,16 @@ export class UpdateTodo {
         this.todoRepository = todoRepository
     }
 
-    execute(todo: Todo) {
-        const task = new Todo(todo.content)
+    execute(id: string, content: string, isChecked: number) {
+        const task = new Todo(content)
 
         if (!task.isContentFilled()) {
             throw new Error("ビジネスルールを破ってますよ！！")
         }
 
-        return this.todoRepository.update(todo)
+        task.id = id
+        task.isChecked = isChecked
+
+        return this.todoRepository.update(task)
     }
 }
