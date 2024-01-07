@@ -7,7 +7,11 @@ export class GetTodoList {
         this.todoRepository = todoRepository
     }
 
-    execute() {
-        return this.todoRepository.findAll()
+    async execute() {
+        const data = await this.todoRepository.findAll().then((item) => {
+            return item
+        })
+
+        return data
     }
 }

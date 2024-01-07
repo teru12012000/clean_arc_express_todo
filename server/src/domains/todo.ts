@@ -13,7 +13,7 @@ domainsはルールの手続きみたいなもの。
 export class Todo {
     private _id: ID
     private _content: string
-    private _checked: number
+    private _isChecked: number
 
     get id(): ID {
         return this._id
@@ -32,11 +32,11 @@ export class Todo {
     }
 
     get isChecked(): number {
-        return this._checked
+        return this._isChecked
     }
 
     set isChecked(isChecked: number) {
-        this._checked = isChecked
+        this._isChecked = isChecked
     }
 
     //ここではコンテンツが空だとfalseを返す
@@ -46,8 +46,9 @@ export class Todo {
 
     //初期化
     constructor(content: string) {
+        this._id = ""
         this._content = content
-        this._checked = 0
+        this._isChecked = 0
     }
 }
 

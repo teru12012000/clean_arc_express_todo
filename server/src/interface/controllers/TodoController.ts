@@ -32,9 +32,9 @@ export class TodoController {
         return result
     }
 
-    findAll() {
+    async findAll() {
         const usecase = new GetTodoList(this.todoRepository)
-        const result: Todo[] = usecase.execute()
+        const result = await usecase.execute()
 
         return this.todoSerilizer.todo(result)
     }

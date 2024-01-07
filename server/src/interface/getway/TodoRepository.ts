@@ -1,28 +1,30 @@
 import { todoRepository } from "../../application/Repository/todoRepository"
-import { db } from "../../db/db"
+import { db } from "../../db"
 import { Todo } from "../../domains/todo"
+import { res } from "../../types/res"
 
-export class TodoRepository implements todoRepository {
-    private todoData: Todo[]
-
-    constructor() {
+const getTodo = () => {
+    return new Promise((resolve) => {
         db.serialize(() => {
-            db.all("SELECT * FROM todo", (err, rows: Todo[]) => {
-                if (err) {
-                    throw new Error("SQLに問題があります")
+            db.all("SELECT * FROM todo", (err, rows: res[]) => {
+                if (!err) {
+                    resolve(rows)
                 }
-                this.todoData = rows
             })
         })
-    }
+    })
+}
 
+export class TodoRepository implements todoRepository {
     create(todo: Todo): string {
         db.serialize(() => {
             db.run(
                 "INSERT INTO todo (ID,CONTENT,CHECKED) VALUES(?,?,?)",
                 [todo.id, todo.content, todo.isChecked],
                 (err) => {
-                    return "SQL ERROR"
+                    if (err) {
+                        return "SQL ERROR"
+                    }
                 },
             )
         })
@@ -30,8 +32,20 @@ export class TodoRepository implements todoRepository {
         return "SUCCESSFUL INSERTION"
     }
 
-    findAll(): Todo[] {
-        return this.todoData
+    async findAll(): Promise<Todo[]> {
+        const data: res[] = (await getTodo()) as res[]
+        const result: Todo[] = []
+
+        db.close()
+
+        data.map((item) => {
+            const todo = new Todo(item.CONTENT)
+            todo.id = item.ID
+            todo.isChecked = item.CHECKED
+            result.push(todo)
+        })
+
+        return result
     }
 
     update(todo: Todo): string {
@@ -46,14 +60,16 @@ export class TodoRepository implements todoRepository {
                 },
             )
         })
-
+        db.close()
         return "SUCCESSFUL UPDATING"
     }
 
     delete(id: string): string {
         db.serialize(() => {
             db.run(`DELETE FROM todo WHERE id=$1`, [id], (err) => {
-                return "SQL ERROR"
+                if (err) {
+                    return "SQL ERROR"
+                }
             })
         })
 
