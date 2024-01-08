@@ -3,7 +3,7 @@
     "version": "1.0.0",
     "license": "MIT",
     "scripts": {
-        "start": "ts-node ./src/main.ts"
+        "start": "nodemon"
     },
     "dependencies": {
         "@types/cors": "^2.8.17",
