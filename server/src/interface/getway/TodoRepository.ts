@@ -1,10 +1,10 @@
 import { todoRepository } from "../../application/Repository/todoRepository"
-import { db } from "../../db"
+import { db } from "../../infrestructure/db/db"
 import { Todo } from "../../domains/todo"
 import { res } from "../../types/res"
 
 const getTodo = () => {
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
         db.serialize(() => {
             db.all("SELECT * FROM todo", (err, rows: res[]) => {
                 if (!err) {
@@ -36,8 +36,6 @@ export class TodoRepository implements todoRepository {
         const data: res[] = (await getTodo()) as res[]
         const result: Todo[] = []
 
-        db.close()
-
         data.map((item) => {
             const todo = new Todo(item.CONTENT)
             todo.id = item.ID
@@ -60,7 +58,7 @@ export class TodoRepository implements todoRepository {
                 },
             )
         })
-        db.close()
+
         return "SUCCESSFUL UPDATING"
     }
 
