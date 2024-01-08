@@ -5,7 +5,7 @@ export const deleteRouter = Router()
 
 const todoController = new TodoController()
 
-deleteRouter.post("/deleteTodo", (req: Request, res: Response) => {
+deleteRouter.delete("/deleteTodo/:id", (req: Request, res: Response) => {
     const result = todoController.delete({ req })
 
     if (result === "SQL ERROR") {
