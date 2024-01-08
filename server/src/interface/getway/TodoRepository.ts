@@ -16,6 +16,14 @@ const getTodo = () => {
 }
 
 export class TodoRepository implements todoRepository {
+    initializer(): void {
+        db.serialize(() => {
+            db.run(
+                "CREATE TABLE IF NOT EXISTS todo(ID VARCHAR(255),CONTENT VARCHAR(255),CHECKED INTAGER)",
+            )
+        })
+    }
+
     create(todo: Todo): string {
         db.serialize(() => {
             db.run(

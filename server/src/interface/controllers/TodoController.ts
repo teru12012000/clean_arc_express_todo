@@ -10,6 +10,7 @@ import { GetTodoList } from "../../application/usecase/GetTodoList"
 import { Todo } from "../../domains/todo"
 import { UpdateTodo } from "../../application/usecase/UpdateTodo"
 import { DeleteTodo } from "../../application/usecase/DeleteTodo"
+import { InitializeTodo } from "../../application/usecase/InitializeTodo"
 
 type Req = {
     req: Request
@@ -22,6 +23,11 @@ export class TodoController {
     constructor() {
         this.todoSerilizer = new TodoSerializer()
         this.todoRepository = new TodoRepository()
+    }
+
+    initialize() {
+        const usecase = new InitializeTodo(this.todoRepository)
+        usecase.execute()
     }
 
     create({ req }: Req) {
